@@ -13,7 +13,7 @@ public class MailClientService {
 
     WebClient client = WebClient.create("http://localhost:8080");
 
-    public ResponseDto getResponse(RequestDto requestData) {
+    public ResponseDto sendEmail(RequestDto requestData) {
         Mono<ResponseDto> employeeMono = client.post()
                 .uri("/sendPersonalizedTemplateEmail")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

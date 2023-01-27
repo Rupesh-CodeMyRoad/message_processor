@@ -43,7 +43,7 @@ public class MessageParserServiceImpl implements MessageParserService {
                     .build();
             requestResponseRepo.save(requestData);
             try {
-                result = mailClientService.getResponse(request);
+                result = mailClientService.sendEmail(request);
             }catch (Exception e){
                 //handle exception Here
                 requestData.setResponse(e.getMessage());
