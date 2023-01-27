@@ -25,17 +25,28 @@ public class MessageParserServiceImpl implements MessageParserService {
     @Override
     public Object parseMessage(RequestDto request) {
         ResponseDto result = null;
+        Map<String,Object> subResponse;
+        Map<String,Object> subData;
+        Map<String,Object> subTypeData;
+        Boolean subStatus;
+        String subType;
+
         RequestResponse requestData;
         if (request.getSubReferenceId() == null) {
             throw new RuntimeException("Please Subscribe first to use services");
         }
-        Boolean checkSubscriptionValidity = subscriptionClientService.getSubResponse(request.getSubReferenceId());
-        if (checkSubscriptionValidity == false) {
-            throw new RuntimeException("Please Subscribe first to use services");
+        try {
+            subResponse = subscriptionClientService.getSubResponse(request.getSubReferenceId());
+            subData = (Map<String, Object>) subResponse.get("subData");
+            subTypeData = (Map<String, Object>) subData.get("subType");
+            subStatus = (Boolean) subData.get("status");
+            subType = (String) subTypeData.get("subName");
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        } if (subResponse == null) {
+            throw new RuntimeException("Sorry no any subscription history found");
         }
-//        Map<String, Object> messageProperties = extractMessageProperties(request.getSubReferenceId());
-//        if (messageProperties.get("subType").equals("SMS")){
-        if (true) {
+        if (subStatus == true && subType.equals("SMS")) {
              requestData = RequestResponse.builder()
                     .request(request.toString())
                     .status(false)
