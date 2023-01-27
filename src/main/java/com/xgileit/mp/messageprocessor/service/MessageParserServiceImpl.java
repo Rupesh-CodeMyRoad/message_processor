@@ -4,6 +4,7 @@ import com.xgileit.mp.messageprocessor.dto.RequestDto;
 import com.xgileit.mp.messageprocessor.dto.ResponseDto;
 import com.xgileit.mp.messageprocessor.model.RequestResponse;
 import com.xgileit.mp.messageprocessor.redirectService.webClient.messageService.MailClientService;
+import com.xgileit.mp.messageprocessor.redirectService.webClient.subscriptionService.SubscriptionClientService;
 import com.xgileit.mp.messageprocessor.repository.RequestResponseRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 
     private final MailClientService mailClientService;
     private final RequestResponseRepo requestResponseRepo;
+    private final SubscriptionClientService subscriptionClientService;
 
     @Override
     public Object parseMessage(RequestDto request) {
@@ -27,7 +29,10 @@ public class MessageParserServiceImpl implements MessageParserService {
         if (request.getSubReferenceId() == null) {
             throw new RuntimeException("Please Subscribe first to use services");
         }
-//        Boolean checkSubscriptionValidity =
+        Boolean checkSubscriptionValidity = subscriptionClientService.getSubResponse(request.getSubReferenceId());
+        if (checkSubscriptionValidity == false) {
+            throw new RuntimeException("Please Subscribe first to use services");
+        }
 //        Map<String, Object> messageProperties = extractMessageProperties(request.getSubReferenceId());
 //        if (messageProperties.get("subType").equals("SMS")){
         if (true) {
