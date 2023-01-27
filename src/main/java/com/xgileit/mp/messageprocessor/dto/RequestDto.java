@@ -8,13 +8,13 @@ import java.util.Set;
 
 @Data
 public class RequestDto {
-    String from;
-    String to;
+    String fromEmail;
+    String toEmail;
     String subject;
     String body;
     String subReferenceId;
 
-    List<String> toList;
+    List<String> toEmailList;
     String templateName;
     Set<MultipartFile> attachment;
 }
