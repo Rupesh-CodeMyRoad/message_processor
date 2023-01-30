@@ -1,5 +1,8 @@
 package com.xgileit.mp.messageprocessor.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.xgileit.mp.messageprocessor.dto.RequestDto;
 import com.xgileit.mp.messageprocessor.dto.ResponseDto;
 import com.xgileit.mp.messageprocessor.model.RequestResponse;
@@ -23,13 +26,15 @@ public class MessageParserServiceImpl implements MessageParserService {
     private final SubscriptionClientService subscriptionClientService;
 
     @Override
-    public Object parseMessage(RequestDto request) {
+    public Object parseMessage(RequestDto request) throws JsonProcessingException {
         ResponseDto result = null;
         Map<String,Object> subResponse;
         Map<String,Object> subData;
         Map<String,Object> subTypeData;
         Boolean subStatus;
         String subType;
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
 
         RequestResponse requestData;
         if (request.getSubReferenceId() == null) {
@@ -48,7 +53,7 @@ public class MessageParserServiceImpl implements MessageParserService {
         }
         if (subStatus == true && subType.equals("SMS")) {
              requestData = RequestResponse.builder()
-                    .request(request.toString())
+                    .request(ow.writeValueAsString(request))
                     .status(false)
                     .subReferenceId(request.getSubReferenceId())
                     .build();

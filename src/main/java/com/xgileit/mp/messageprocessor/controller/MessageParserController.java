@@ -1,5 +1,6 @@
 package com.xgileit.mp.messageprocessor.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ public class MessageParserController {
      * @return success or failure response
      */
     @PostMapping(value = "/parse")
-    public ResponseEntity<?> saveSubType(@ModelAttribute RequestDto request) {
+    public ResponseEntity<?> saveSubType(@ModelAttribute RequestDto request) throws JsonProcessingException {
         return ResponseEntity.ok(service.parseMessage(request));
     }
 }
