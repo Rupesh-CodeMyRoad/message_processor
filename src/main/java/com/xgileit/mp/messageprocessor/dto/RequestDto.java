@@ -8,6 +8,7 @@ import java.util.Set;
 
 @Data
 public class RequestDto {
+    Long requestResponseId;
     String fromEmail;
     String toEmail;
     String subject;

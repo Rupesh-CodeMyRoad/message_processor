@@ -15,7 +15,7 @@ public class MailClientService {
 
     public ResponseDto sendEmail(RequestDto requestData) {
         Mono<ResponseDto> employeeMono = client.post()
-                .uri("/sendAttachEmail")
+                .uri("/sendPersonalizedTemplateEmail")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(Mono.just(requestData), RequestDto.class)
                 .retrieve()

@@ -34,8 +34,6 @@ public class MessageParserServiceImpl implements MessageParserService {
         Boolean subStatus;
         String subType;
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-
-
         RequestResponse requestData;
         if (request.getSubReferenceId() == null) {
             throw new RuntimeException("Please Subscribe first to use services");
@@ -52,12 +50,16 @@ public class MessageParserServiceImpl implements MessageParserService {
             throw new RuntimeException("Sorry no any subscription history found");
         }
         if (subStatus == true && subType.equals("SMS")) {
-             requestData = RequestResponse.builder()
-                    .request(ow.writeValueAsString(request))
-                    .status(false)
-                    .subReferenceId(request.getSubReferenceId())
-                    .build();
-            requestResponseRepo.save(requestData);
+            if (request.getRequestResponseId() == null) {
+                requestData = RequestResponse.builder()
+                        .request(ow.writeValueAsString(request))
+                        .status(false)
+                        .subReferenceId(request.getSubReferenceId())
+                        .build();
+                requestResponseRepo.save(requestData);
+            }else {
+                requestData = requestResponseRepo.findById(request.getRequestResponseId()).orElseThrow(()-> new RuntimeException("Request Response History Not Found !!"));
+            }
             try {
                 result = mailClientService.sendEmail(request);
             }catch (Exception e){

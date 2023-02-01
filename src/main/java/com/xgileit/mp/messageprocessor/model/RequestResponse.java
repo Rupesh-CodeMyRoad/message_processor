@@ -23,7 +23,7 @@ public class RequestResponse implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "request_response_id", nullable = false)
-    private Long requestReponseId;
+    private Long requestResponseId;
 
     @Column(name = "sub_reference_id", nullable = false)
     private String subReferenceId;

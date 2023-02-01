@@ -25,7 +25,7 @@ public class MessageParserController {
      * @return success or failure response
      */
     @PostMapping(value = "/parse")
-    public ResponseEntity<?> saveSubType(@ModelAttribute RequestDto request) throws JsonProcessingException {
+    public ResponseEntity<?> messageHandler(@ModelAttribute RequestDto request) throws JsonProcessingException {
         return ResponseEntity.ok(service.parseMessage(request));
     }
 }
